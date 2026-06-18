@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Recommendations</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <a class="logo" href="/dashboard">MovieFlix</a>
+        <form class="nav-search" action="/search" method="GET">
+            <input type="text" name="q" placeholder="Search movies" aria-label="Search movies">
+            <button type="submit">Search</button>
+        </form>
+        <div class="nav-links">
+            <a href="/dashboard">Home</a>
+            <a href="/favorites">Favorites</a>
+            <a href="/watchlist">Watchlist</a>
+            <a href="/logout">Logout</a>
+        </div>
+    </nav>
+
+    <main class="page-shell">
+        <section class="movie-section">
+            <h1>AI Recommendations</h1>
+            {% if not model_ready %}
+                <p class="notice">The cosine-similarity model is not generated yet. Add the CSV files to datasets/ and run python ml/train_recommender.py.</p>
+            {% endif %}
+            <div class="movie-grid">
+                {% for movie in movies %}
+                    <article class="movie-card">
+                        <a href="{{ movie.detail_url or url_for('tmdb_movie', movie_id=movie.tmdb_id) }}">
+                            <img src="{{ movie.poster_url }}" alt="{{ movie.title }} poster">
+                            <h3>{{ movie.title }}</h3>
+                        </a>
+                        <p>{{ movie.release_year }} | Rating {{ movie.rating }}</p>
+                    </article>
+                {% else %}
+                    <p class="muted">Favorite or view more movies to personalize this page.</p>
+                {% endfor %}
+            </div>
+        </section>
+    </main>
+</body>
+</html>

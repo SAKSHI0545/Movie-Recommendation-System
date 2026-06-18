@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <a class="logo" href="/dashboard">MovieFlix</a>
+        <form class="nav-search" action="/search" method="GET">
+            <input type="text" name="q" placeholder="Search movies" aria-label="Search movies">
+            <button type="submit">Search</button>
+        </form>
+        <div class="nav-links">
+            <a href="/dashboard">Dashboard</a>
+            <a href="/favorites">Favorites</a>
+            <a href="/watchlist">Watchlist</a>
+            <a href="/logout">Logout</a>
+        </div>
+    </nav>
+
+    <main class="page-shell">
+        <section class="movie-section">
+            <h1>Movie Recommendation Platform</h1>
+        </section>
+
+        <section class="movie-section">
+            <h2>Trending Movies</h2>
+            <div class="movie-row">
+                {% for movie in trending %}
+                    <article class="movie-card">
+                        <a href="{{ movie.detail_url or url_for('tmdb_movie', movie_id=movie.tmdb_id) }}">
+                            <img src="{{ movie.poster_url }}" alt="{{ movie.title }} poster">
+                            <h3>{{ movie.title }}</h3>
+                        </a>
+                        <p>{{ movie.release_year }} | Rating {{ movie.rating }}</p>
+                    </article>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section class="movie-section">
+            <h2>Sci-Fi Movies</h2>
+            <div class="movie-row">
+                {% for movie in sci_fi_movies %}
+                    <article class="movie-card">
+                        <a href="{{ movie.detail_url }}">
+                            <img src="{{ movie.poster_url }}" alt="{{ movie.title }} poster">
+                            <h3>{{ movie.title }}</h3>
+                        </a>
+                        <p>{{ movie.genre }} | Rating {{ movie.rating }}</p>
+                    </article>
+                {% else %}
+                    <p class="muted">No Sci-Fi movies in the local library yet.</p>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section class="movie-section">
+            <h2>Action Movies</h2>
+            <div class="movie-row">
+                {% for movie in action_movies %}
+                    <article class="movie-card">
+                        <a href="{{ movie.detail_url }}">
+                            <img src="{{ movie.poster_url }}" alt="{{ movie.title }} poster">
+                            <h3>{{ movie.title }}</h3>
+                        </a>
+                        <p>{{ movie.genre }} | Rating {{ movie.rating }}</p>
+                    </article>
+                {% else %}
+                    <p class="muted">No Action movies in the local library yet.</p>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section class="movie-section">
+            <h2>Your Favorites</h2>
+            <div class="movie-row">
+                {% for movie in favorite_movies %}
+                    <article class="movie-card">
+                        <a href="{{ movie.detail_url }}">
+                            <img src="{{ movie.poster_url }}" alt="{{ movie.title }} poster">
+                            <h3>{{ movie.title }}</h3>
+                        </a>
+                        <p>{{ movie.genre }} | Rating {{ movie.rating }}</p>
+                    </article>
+                {% else %}
+                    <p class="muted">No favorites yet.</p>
+                {% endfor %}
+            </div>
+        </section>
+    </main>
+</body>
+</html>

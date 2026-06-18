@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MovieFlix Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <a class="logo" href="/dashboard">MovieFlix</a>
+        <form class="nav-search" action="/search" method="GET">
+            <input type="text" name="q" placeholder="Search movies" aria-label="Search movies">
+            <button type="submit">Search</button>
+        </form>
+        <div class="nav-links">
+            <a href="/dashboard">Home</a>
+            <a href="/movies">Library</a>
+            <a href="/favorites">Favorites</a>
+            <a href="/watchlist">Watchlist</a>
+            <a href="/recommendations">AI Picks</a>
+            <a href="/logout">Logout</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <p class="eyebrow">Welcome back, {{ username }}</p>
+            <h1>Find your next favorite movie.</h1>
+            <p>Personalized recommendations powered by content similarity, cast, directors, genres, keywords, and story overview.</p>
+            <a class="primary-btn" href="/search">Start Searching</a>
+        </div>
+    </section>
+
+    <main class="page-shell">
+        <section class="movie-section">
+            <h2>Trending Movies</h2>
+            <div class="movie-row">
+                {% for movie in trending %}
+                    <article class="movie-card">
+                        <a href="{{ movie.detail_url or url_for('tmdb_movie', movie_id=movie.tmdb_id) }}">
+                            <img src="{{ movie.poster_url }}" alt="{{ movie.title }} poster">
+                            <h3>{{ movie.title }}</h3>
+                        </a>
+                        <p>{{ movie.release_year }} | Rating {{ movie.rating }}</p>
+                    </article>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section class="movie-section">
+            <h2>Recently Viewed</h2>
+            <div class="movie-row">
+                {% for movie in recently_viewed %}
+                    <article class="movie-card">
+                        <a href="{{ movie.detail_url }}">
+                            <img src="{{ movie.poster_url }}" alt="{{ movie.title }} poster">
+                            <h3>{{ movie.title }}</h3>
+                        </a>
+                        <p>{{ movie.release_year }} | Rating {{ movie.rating }}</p>
+                    </article>
+                {% else %}
+                    <p class="muted">Open a movie details page and it will appear here.</p>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section class="movie-section">
+            <h2>Your Favorites</h2>
+            <div class="movie-row">
+                {% for movie in favorite_movies %}
+                    <article class="movie-card">
+                        <a href="{{ movie.detail_url }}">
+                            <img src="{{ movie.poster_url }}" alt="{{ movie.title }} poster">
+                            <h3>{{ movie.title }}</h3>
+                        </a>
+                        <p>{{ movie.genre }} | Rating {{ movie.rating }}</p>
+                    </article>
+                {% else %}
+                    <p class="muted">Favorite a movie to build your taste profile.</p>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section class="movie-section">
+            <h2>Watchlist</h2>
+            <div class="movie-row">
+                {% for movie in watchlist_movies %}
+                    <article class="movie-card">
+                        <a href="{{ movie.detail_url }}">
+                            <img src="{{ movie.poster_url }}" alt="{{ movie.title }} poster">
+                            <h3>{{ movie.title }}</h3>
+                        </a>
+                        <p>{{ movie.release_year }} | Rating {{ movie.rating }}</p>
+                    </article>
+                {% else %}
+                    <p class="muted">Add movies to your watchlist when you want to save them for later.</p>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section class="movie-section">
+            <h2>Recommended For You</h2>
+            <div class="movie-row">
+                {% for movie in recommended_movies %}
+                    <article class="movie-card">
+                        <a href="{{ movie.detail_url or url_for('tmdb_movie', movie_id=movie.tmdb_id) }}">
+                            <img src="{{ movie.poster_url }}" alt="{{ movie.title }} poster">
+                            <h3>{{ movie.title }}</h3>
+                        </a>
+                        <p>{{ movie.release_year }} | Rating {{ movie.rating }}</p>
+                    </article>
+                {% else %}
+                    <p class="muted">Train the recommendation model to unlock AI-powered picks.</p>
+                {% endfor %}
+            </div>
+        </section>
+    </main>
+</body>
+</html>

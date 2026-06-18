@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ movie.title if movie else 'Movie Details' }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <a class="logo" href="/dashboard">MovieFlix</a>
+        <form class="nav-search" action="/search" method="GET">
+            <input type="text" name="q" placeholder="Search movies" aria-label="Search movies">
+            <button type="submit">Search</button>
+        </form>
+        <div class="nav-links">
+            <a href="/dashboard">Home</a>
+            <a href="/favorites">Favorites</a>
+            <a href="/watchlist">Watchlist</a>
+            <a href="/logout">Logout</a>
+        </div>
+    </nav>
+
+    {% if movie %}
+        <main class="details-page">
+            <section class="details-hero" {% if movie.backdrop_url %}style="background-image: linear-gradient(90deg, rgba(5,5,8,.96), rgba(5,5,8,.72)), url('{{ movie.backdrop_url }}');"{% endif %}>
+                <img class="details-poster" src="{{ movie.poster_url }}" alt="{{ movie.title }} poster">
+                <div class="details-copy">
+                    <p class="eyebrow">{{ movie.release_year }} | {{ movie.language }} | Rating {{ movie.rating }}</p>
+                    <h1>{{ movie.title }}</h1>
+                    <p>{{ movie.overview }}</p>
+                    <div class="meta-grid">
+                        <span>Genres: {{ movie.genres | join(', ') }}</span>
+                        <span>Release: {{ movie.release_date or 'N/A' }}</span>
+                        <span>Runtime: {{ movie.runtime or 'N/A' }} min</span>
+                        <span>Popularity: {{ movie.popularity }}</span>
+                        <span>Cast: {{ movie.cast | join(', ') }}</span>
+                        {% if movie.director %}<span>Director: {{ movie.director }}</span>{% endif %}
+                    </div>
+                    <div class="action-row">
+                        <a class="primary-btn" href="{{ url_for('favorite_tmdb', tmdb_id=movie.tmdb_id) }}">Add to Favorites</a>
+                        <a class="secondary-btn" href="{{ url_for('add_watchlist_tmdb', tmdb_id=movie.tmdb_id) }}">Add to Watchlist</a>
+                        {% if movie.trailer_key %}
+                            <a class="secondary-btn" href="https://www.youtube.com/watch?v={{ movie.trailer_key }}" target="_blank" rel="noreferrer">Trailer</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </section>
+
+            <section class="movie-section">
+                <h2>You May Also Like</h2>
+                <div class="movie-row">
+                    {% for item in recommendations %}
+                        <article class="movie-card">
+                            <a href="{{ item.detail_url }}">
+                                <img src="{{ item.poster_url }}" alt="{{ item.title }} poster">
+                                <h3>{{ item.title }}</h3>
+                            </a>
+                            <p>{{ item.release_year }} | Rating {{ item.rating }}</p>
+                        </article>
+                    {% else %}
+                        <p class="muted">Train the recommendation model to show similar movies here.</p>
+                    {% endfor %}
+                </div>
+            </section>
+        </main>
+    {% else %}
+        <main class="page-shell">
+            <h1>Movie data unavailable.</h1>
+            <a class="secondary-btn" href="/search">Back to Search</a>
+        </main>
+    {% endif %}
+</body>
+</html>
