@@ -25,3 +25,6 @@ flask.out.log
 
 # Log files
 *.log
+
+# Environment variables
+.env
