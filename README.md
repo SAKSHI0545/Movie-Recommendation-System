@@ -1,110 +1,257 @@
-# AI-Powered Movie Recommendation Platform
+# 🎬 Content-Based Movie Recommendation Platform
 
-MovieFlix is a Flask and MySQL movie recommendation app upgraded with an AI-powered content-based recommendation engine. It keeps the original registration, login, dashboard, search, favorites, and TMDB integration while adding cosine-similarity recommendations, watchlist, search history, and recently viewed movies.
+A full-stack Movie Recommendation Platform built using **Flask**, **Python**, **MySQL**, and the **TMDB API**. The application allows users to search movies, view detailed information, manage favorites and watchlists, and receive intelligent movie recommendations using a **Content-Based Recommendation System** powered by **CountVectorizer** and **Cosine Similarity**.
 
-## Tech Stack
+---
 
-- Python and Flask
-- MySQL
-- Jinja2 templates
-- HTML and CSS
-- TMDB API for movie metadata and posters
-- pandas, numpy, scikit-learn
-- CountVectorizer and cosine similarity
+## ✨ Features
 
-## Features
+### 👤 User Authentication
+- User Registration
+- Secure Login
+- Session Management
 
-- User registration and session-based login
-- TMDB movie search with poster, title, rating, and release year
-- Detailed movie pages with poster, overview, genres, release date, runtime, rating, language, popularity, cast, and optional trailer link
-- Content-based "You May Also Like" recommendations from your own trained model
-- User-specific favorites stored in MySQL
-- User-specific watchlist stored in MySQL
-- Recent search history per user
-- Recently viewed movies on the dashboard
-- Dashboard sections for trending movies, recently viewed, favorites, watchlist, and recommended movies
-- Netflix-inspired dark responsive interface
+### 🎬 Movie Features
+- Search Movies using TMDB API
+- View Detailed Movie Information
+- Movie Posters
+- Ratings
+- Genres
+- Runtime
+- Cast Information
+- Release Date
+- Popularity Score
 
-## Dataset
+### 🤖 Recommendation Engine
+- Content-Based Movie Recommendation
+- CountVectorizer for Feature Extraction
+- Cosine Similarity Algorithm
+- "You May Also Like" Recommendations
+- Fast Recommendation Retrieval using Pickle Models
 
-Download these files and place them in the `datasets/` folder:
+### ❤️ Personalization
+- User-specific Favorites
+- User-specific Watchlist
+- Recently Viewed Movies
+- Search History
+
+### 📊 Dashboard
+- Trending Movies
+- Recently Viewed Movies
+- Favorites
+- Watchlist
+- Recommended Movies
+
+### 🎨 User Interface
+- Responsive Design
+- Dark Theme
+- Flask + Jinja2 Templates
+
+---
+
+# 🛠 Tech Stack
+
+| Category | Technologies |
+|----------|--------------|
+| **Backend** | Python, Flask |
+| **Frontend** | HTML, CSS, Jinja2 |
+| **Database** | MySQL |
+| **Machine Learning** | Pandas, NumPy, Scikit-learn |
+| **Recommendation Algorithm** | CountVectorizer, Cosine Similarity |
+| **API** | TMDB API |
+| **Tools** | Git, GitHub, VS Code, Postman |
+
+---
+
+# 🧠 How the Recommendation System Works
+
+This project uses a **Content-Based Filtering** approach.
+
+Instead of recommending movies based on ratings from other users, the recommendation engine compares movie content and suggests movies with similar characteristics.
+
+The recommendation model considers:
+
+- Genres
+- Keywords
+- Cast
+- Director
+- Movie Overview
+
+### Recommendation Pipeline
+
+```
+TMDB Dataset
+        │
+        ▼
+Data Cleaning
+        │
+        ▼
+Feature Engineering
+        │
+        ▼
+CountVectorizer
+        │
+        ▼
+Cosine Similarity Matrix
+        │
+        ▼
+Movie Recommendations
+```
+
+The trained recommendation model is loaded when the Flask application starts, making recommendations fast without retraining the model for every request.
+
+---
+
+# 📂 Dataset
+
+This project uses the **TMDB 5000 Movie Dataset**.
+
+Dataset files:
 
 - `tmdb_5000_movies.csv`
 - `tmdb_5000_credits.csv`
 
-The model uses:
+Place both files inside:
 
-- genres
-- keywords
-- cast
-- director
-- overview
-
-Generate the model files with:
-
-```bash
-python ml/train_recommender.py
+```
+datasets/
 ```
 
-This creates:
+---
 
-- `models/movies.pkl`
-- `models/similarity.pkl`
+# ⚙️ Installation
 
-Flask loads these pickle files at startup. It does not rebuild the model on every request.
+### Clone the Repository
 
-## Installation
+```bash
+git clone https://github.com/SAKSHI0545/Movie-Recommendation-System.git
+```
 
-Create and activate a virtual environment, then install dependencies:
+### Move into the Project
+
+```bash
+cd Movie-Recommendation-System
+```
+
+### Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-Create a MySQL database named `movie_app`, then update `database.py` if your MySQL username or password is different.
+### Configure Database
 
-The app reads the TMDB API key from either:
+Create a MySQL database named:
 
-- the `TMDB_API_KEY` environment variable
-- the first line of the existing `api` file
+```
+movie_app
+```
 
-## Running The Project
+Update your database credentials before running the application.
 
-Train the recommendation model first if the dataset files are available:
+---
+
+# 🚀 Generate Recommendation Model
+
+Run:
 
 ```bash
 python ml/train_recommender.py
 ```
 
-Start Flask:
+This generates:
+
+```
+models/
+│── movies.pkl
+│── similarity.pkl
+```
+
+> **Note:** `similarity.pkl` is intentionally excluded from this repository because it exceeds GitHub's 100 MB file size limit. It can be regenerated anytime using the training script.
+
+---
+
+# ▶️ Run the Application
 
 ```bash
 python app.py
 ```
 
-Open:
+Open your browser:
 
-```text
+```
 http://127.0.0.1:5000
 ```
 
-The app creates the new `watchlist`, `search_history`, and `recently_viewed` tables automatically if they do not exist.
+---
 
-## Screenshots
+# 📁 Project Structure
 
-Add screenshots here:
+```
+Movie-Recommendation-System
+│
+├── app.py
+├── database.py
+├── requirements.txt
+├── README.md
+├── .gitignore
+│
+├── datasets/
+│   ├── tmdb_5000_movies.csv
+│   └── tmdb_5000_credits.csv
+│
+├── ml/
+│   ├── train_recommender.py
+│   └── __init__.py
+│
+├── models/
+│   ├── movies.pkl
+│   └── similarity.pkl (Generated Locally)
+│
+├── static/
+├── templates/
+└── utils/
+```
 
-- Login page
+---
+
+# 📸 Screenshots
+
+> Screenshots will be added soon.
+
+Suggested screenshots:
+
+- Home Page
+- Login Page
 - Dashboard
-- Search results
-- Movie details page
-- Favorites and watchlist
+- Search Results
+- Movie Details
+- Recommendation Section
+- Favorites
+- Watchlist
 
-## Future Enhancements
+---
 
-- Password hashing with Werkzeug
-- Pagination for search and library pages
-- User rating feedback to improve recommendations
-- Movie review comments
-- Admin panel for managing local movies
-- Deployment configuration for production hosting
+# 🔮 Future Enhancements
+
+- Personalized recommendations based on user favorites
+- Movie Reviews and Ratings
+- Recommendation Feedback System
+- Mood-Based Movie Recommendations
+- Recently Trending Movies
+- Email Notifications
+- Cloud Deployment
+
+---
+
+# 👩‍💻 Author
+
+**Sakshi Marne**
+
+Computer Engineering Student
+
+**Skills:** Python • Flask • SQL • Machine Learning • REST APIs • Git • GitHub
+
+---
+
+⭐ If you found this project useful, consider giving it a star.
