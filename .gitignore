@@ -28,3 +28,6 @@ flask.out.log
 
 # Environment variables
 .env
+
+# Generated recommendation models
+models/similarity.pkl
